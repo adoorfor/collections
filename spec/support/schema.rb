@@ -19,4 +19,12 @@ ActiveRecord::Schema.define do
     t.string :name
     t.timestamps
   end
+
+  # Collection Proxy Adapter Spec
+  create_table :bear_cats, :force => true do |t|
+    t.integer :cat_id, :null => false
+    t.integer :bear_id, :null => false
+    t.string :role, :null => false, :default => 'member'
+    t.timestamps
+  end
 end
