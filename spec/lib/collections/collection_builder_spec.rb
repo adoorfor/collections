@@ -1,6 +1,6 @@
 require './lib/collections/collection_builder'
 
-RSpec.describe CollectionBuilder do
+RSpec.describe Collections::CollectionBuilder do
   
   let(:model_class) {
     double(
@@ -34,7 +34,7 @@ RSpec.describe CollectionBuilder do
   describe "given the host class we add the has_many collection" do
 
     let(:builder) {
-      CollectionBuilder.new(
+      Collections::CollectionBuilder.new(
         model_class: model_class,
         adapter: adapter_class,
         collection: collection,

@@ -12,6 +12,12 @@ class Organisation < ActiveRecord::Base
   )
 
   collection(
+    :name => :owner,
+    :as => :user,
+    :through => :members,
+  )
+
+  collection(
     :name => :admins,
     :as => :user,
     :through => :members,

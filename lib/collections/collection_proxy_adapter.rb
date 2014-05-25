@@ -22,7 +22,7 @@ module Collections
       attr_reader :collection_klass
 
       def symbolize(argument)
-        argument.underscore.to_sym
+        argument.to_s.underscore.to_sym
       end
 
       def set_relations(prime, second)

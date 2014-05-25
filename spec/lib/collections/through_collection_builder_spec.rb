@@ -1,6 +1,6 @@
 require './lib/collections/through_collection_builder'
 
-RSpec.describe ThroughCollectionBuilder do
+RSpec.describe Collections::ThroughCollectionBuilder do
   
   let(:model_class) {
     double(
@@ -34,7 +34,7 @@ RSpec.describe ThroughCollectionBuilder do
   describe "given the host class we add the has_many collection" do
 
     let(:builder) {
-      ThroughCollectionBuilder.new(
+      Collections::ThroughCollectionBuilder.new(
         model_class: model_class,
         adapter: adapter_class,
         collection: collection,
