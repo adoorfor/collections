@@ -36,10 +36,18 @@ module Collections
       def define_though_collection(model:, collection:)
         adapter.new(model: model_class).apply(
           :"#{collection.name.underscore}_#{name}",
-          -> {where(role: name.to_s.downcase.singularize)},
+          query(query_name),
           :class_name => collection.name,
           :foreign_key => model.name.foreign_key.to_sym,
         )
+      end
+
+      def query(query_value)
+        Proc.new { where(role: query_value) }
+      end
+
+      def query_name
+        name.to_s.downcase.underscore.singularize
       end
   end
 end

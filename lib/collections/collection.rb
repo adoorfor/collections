@@ -1,6 +1,7 @@
 # require dependencies
 require 'active_record'
 require 'active_support/inflector'
+require 'collections/helpers/name_convention_type'
 require "collections/collection_proxy_adapter"
 require "collections/has_many_adapter"
 require "collections/has_one_adapter"
@@ -30,7 +31,7 @@ module Collections
       def define_collection
         CollectionBuilder.new(
           :model_class => model,
-          :adapter => HasManyAdapter,
+          :adapter => adapter,
           :collection => collection,
         ).apply(
           :name => name,
@@ -41,7 +42,7 @@ module Collections
       def define_though_collection
         ThroughCollectionBuilder.new(
           :model_class => model,
-          :adapter => HasManyAdapter,
+          :adapter => adapter,
           :collection => collection,
         ).apply(
           :name => name,
@@ -59,6 +60,14 @@ module Collections
       def collection_name
         secondary_name = through ? through.to_s.classify : name.to_s.classify
         model.name.to_s + secondary_name
+      end
+
+      def adapter
+        collection_name_plural? ? HasManyAdapter : HasOneAdapter
+      end
+
+      def collection_name_plural?
+        NameConventionType.new(name.to_s).plural?
       end
 
       def symbolize(word)
