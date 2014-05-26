@@ -3,7 +3,7 @@ module Collections
     
     def initialize(model_class:, collection:, adapter:)
       @collection = collection
-      @adapter = adapter
+      @adapter = adapter.new(model: model_class)
       @model_class = model_class
     end
 
@@ -11,44 +11,40 @@ module Collections
       @name = name
       @type = type
       define_collection(
-        model: model_class,
         collection: collection,
       )
-
-      p model_class.to_s + "\n"
     end
 
     private
       attr_reader :adapter, :model_class
       attr_reader :name, :collection, :type
 
-      def define_collection(model:, collection:)
-        define_though_collection(
+      def define_collection(collection:)
+        pass_though_collection(
           collection: collection,
-          model: model,
         )
 
-        adapter.new(model: model_class).apply(
+        adapter.apply(
           name,
           :through => :"#{collection.name.underscore}_#{name}",
           :source => type,
         )
       end
 
-      def define_though_collection(model:, collection:)
-        adapter.new(model: model_class).apply(
+      def pass_though_collection(collection:)
+        adapter.apply(
           :"#{collection.name.underscore}_#{name}",
-          query(query_name),
+          role_query(role),
           :class_name => collection.name,
-          :foreign_key => model.name.foreign_key.to_sym,
+          :foreign_key => model_class.name.foreign_key.to_sym,
         )
       end
 
-      def query(query_value)
+      def role_query(query_value)
         Proc.new { where(role: query_value) }
       end
 
-      def query_name
+      def role
         name.to_s.downcase.underscore.singularize
       end
   end

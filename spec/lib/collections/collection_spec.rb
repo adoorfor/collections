@@ -38,7 +38,7 @@ RSpec.describe Collections::Collection do
   }
 
   before do
-    Collections::CollectionProxyAdapter.stub(:new) { collection_proxy_object }
+    Collections::CollectionAdapter.stub(:new) { collection_proxy_object }
     Collections::CollectionBuilder.stub(:new) { builder }
     Collections::ThroughCollectionBuilder.stub(:new) { builder }   
   end
@@ -54,7 +54,7 @@ RSpec.describe Collections::Collection do
           :type => :user
         )
 
-        expect(Collections::CollectionProxyAdapter)
+        expect(Collections::CollectionAdapter)
           .to have_received(:new)
           .with(
             :primary => :organisation,
@@ -115,7 +115,7 @@ RSpec.describe Collections::Collection do
           :through => :members,
         )
 
-        expect(Collections::CollectionProxyAdapter)
+        expect(Collections::CollectionAdapter)
           .to have_received(:new)
           .with(
             :primary => :organisation,
@@ -182,7 +182,7 @@ RSpec.describe Collections::Collection do
           :type => :user,
         )
 
-        expect(Collections::CollectionProxyAdapter)
+        expect(Collections::CollectionAdapter)
           .to have_received(:new)
           .with(
             :primary => :organisation,
@@ -243,7 +243,7 @@ RSpec.describe Collections::Collection do
           :through => :members,
         )
 
-        expect(Collections::CollectionProxyAdapter)
+        expect(Collections::CollectionAdapter)
           .to have_received(:new)
           .with(
             :primary => :organisation,
@@ -325,7 +325,7 @@ RSpec.describe Collections::Collection do
           :through => :members,
         )
 
-        expect(Collections::CollectionProxyAdapter)
+        expect(Collections::CollectionAdapter)
           .to have_received(:new)
           .with(
             :primary => :user,
@@ -354,7 +354,7 @@ RSpec.describe Collections::Collection do
           :through => :members,
         )
 
-        expect(Collections::ThroughCollectionBuilder)
+        expect(Collections::CollectionBuilder)
           .to have_received(:new)
           .with(
             :model_class => model,

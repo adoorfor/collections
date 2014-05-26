@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Collections::CollectionProxyAdapter do
+RSpec.describe Collections::CollectionAdapter do
 
 
   describe "given that there is a Collection Model within the Object Constant" do
@@ -8,7 +8,7 @@ RSpec.describe Collections::CollectionProxyAdapter do
     class ApplePear; end
 
     let(:adapter) {
-      Collections::CollectionProxyAdapter.new(primary: 'user', secondary: 'fish')
+      Collections::CollectionAdapter.new(primary: 'user', secondary: 'fish')
     }
 
     it "will return the ApplePears class object" do
@@ -22,7 +22,7 @@ RSpec.describe Collections::CollectionProxyAdapter do
   describe "given that there is no collection Model within the Object Constant" do
 
     let(:adapter) {
-      Collections::CollectionProxyAdapter.new(primary: 'bear', secondary: 'cat')
+      Collections::CollectionAdapter.new(primary: 'bear', secondary: 'cat')
     }
 
     it "will return the PearApple class object" do

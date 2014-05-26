@@ -1,8 +1,8 @@
 # require dependencies
 require 'active_record'
 require 'active_support/inflector'
-require 'collections/helpers/name_convention_type'
-require "collections/adapters/collection_proxy_adapter"
+require 'collections/helpers/helpers'
+require "collections/adapters/collection_adapter"
 require "collections/adapters/has_many_adapter"
 require "collections/adapters/has_one_adapter"
 require "collections/builders/collection_builder"
@@ -10,10 +10,12 @@ require "collections/builders/through_collection_builder"
 
 module Collections
   class Collection
+    include Helpers
 
-    def initialize(model:, proxy:)
+    def initialize(model:, proxy:, role: nil)
       @model = model
       @proxy = proxy
+      @role = role
     end
 
     def apply(name:, type:, through: nil)
@@ -21,15 +23,26 @@ module Collections
       @type = type
       @through = through
       
-      through ? define_though_collection : define_collection
+      proxy ? proxy_builder : builder
     end
 
     private
-      attr_reader :model, :proxy
+      attr_reader :model, :proxy, :role
       attr_reader :name, :type, :through
 
+      def proxy_builder
+        collection_builder
+      end
 
-      def define_collection
+      def builder
+        relational? ? through_collection_builder : collection_builder
+      end
+
+      def relational?
+        through or role
+      end
+
+      def collection_builder
         CollectionBuilder.new(
           :model_class => model,
           :adapter => adapter,
@@ -40,7 +53,7 @@ module Collections
         )
       end
 
-      def define_though_collection
+      def through_collection_builder
         ThroughCollectionBuilder.new(
           :model_class => model,
           :adapter => adapter,
@@ -52,7 +65,7 @@ module Collections
       end
 
       def collection
-        @collection = CollectionProxyAdapter.new(
+        @collection = CollectionAdapter.new(
           primary: symbolize(model.name),
           secondary: type,
         ).apply(collection_name)
@@ -71,15 +84,7 @@ module Collections
       end
 
       def adapter
-        collection_name_plural? ? HasManyAdapter : HasOneAdapter
-      end
-
-      def collection_name_plural?
-        NameConventionType.new(name.to_s).plural?
-      end
-
-      def symbolize(word)
-        word.to_s.downcase.to_sym
+        plural?(name) ? HasManyAdapter : HasOneAdapter
       end
   end
 end

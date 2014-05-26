@@ -3,7 +3,7 @@ module Collections
     
     def initialize(model_class:, collection:, adapter:)
       @collection = collection
-      @adapter = adapter
+      @adapter = adapter.new(model: model_class)
       @model_class = model_class
     end
 
@@ -11,33 +11,30 @@ module Collections
       @name = name
       @type = type
       define_collection(
-        model: model_class,
         collection: collection,
       )
     end
-
 
     private
       attr_reader :adapter, :model_class
       attr_reader :name, :collection, :type
 
-      def define_collection(model:, collection:)
-        define_though_collection(
-          model: model,
+      def define_collection(collection:)
+        pass_though_collection(
           collection: collection,
         )
-        adapter.new(model: model_class).apply(
+        adapter.apply(
           name,
           :through => :"#{collection.name.underscore}_#{name}",
           :source => type,
         )
       end
 
-      def define_though_collection(model:, collection:)
-        adapter.new(model: model_class).apply(
+      def pass_though_collection(collection:)
+        adapter.apply(
           :"#{collection.name.underscore}_#{name}",
           :class_name => collection.name,
-          :foreign_key => model.name.foreign_key.to_sym,
+          :foreign_key => model_class.name.foreign_key.to_sym,
         )
       end
   end

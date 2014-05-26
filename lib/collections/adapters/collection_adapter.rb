@@ -1,6 +1,7 @@
 module Collections
     
-  class CollectionProxyAdapter
+  class CollectionAdapter
+    include Helpers
 
     def initialize(primary:, secondary:)
       @primary = symbolize(primary)
@@ -20,10 +21,6 @@ module Collections
     private
       attr_reader :primary, :secondary
       attr_reader :collection_klass
-
-      def symbolize(argument)
-        argument.to_s.underscore.to_sym
-      end
 
       def set_relations(prime, second)
         collection_klass.class_eval {
