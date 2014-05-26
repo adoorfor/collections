@@ -40,7 +40,7 @@ RSpec.describe Collections::Collection do
   before do
     Collections::CollectionAdapter.stub(:new) { collection_proxy_object }
     Collections::CollectionBuilder.stub(:new) { builder }
-    Collections::ThroughCollectionBuilder.stub(:new) { builder }   
+    Collections::RoleCollectionBuilder.stub(:new) { builder }   
   end
 
   describe "when given arguments for a plural named collection" do
@@ -144,7 +144,7 @@ RSpec.describe Collections::Collection do
           :through => :members,
         )
 
-        expect(Collections::ThroughCollectionBuilder)
+        expect(Collections::RoleCollectionBuilder)
           .to have_received(:new)
           .with(
             :model_class => model,
@@ -166,6 +166,7 @@ RSpec.describe Collections::Collection do
           .with(
             :name => :admins,
             :type => :user,
+            :role => :admin,
           )
       end
     end
@@ -272,7 +273,7 @@ RSpec.describe Collections::Collection do
           :through => :members,
         )
 
-        expect(Collections::ThroughCollectionBuilder)
+        expect(Collections::RoleCollectionBuilder)
           .to have_received(:new)
           .with(
             :model_class => model,
@@ -294,6 +295,7 @@ RSpec.describe Collections::Collection do
           .with(
             :name => :owner,
             :type => :user,
+            :role => :owner,
           )
       end
     end

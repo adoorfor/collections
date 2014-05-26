@@ -1,5 +1,6 @@
 module Collections
-  class ThroughCollectionBuilder
+  class RoleCollectionBuilder
+    include Helpers
     
     def initialize(model_class:, collection:, adapter:)
       @collection = collection
@@ -7,17 +8,18 @@ module Collections
       @model_class = model_class
     end
 
-    def apply(name:, type:)
+    def apply(name:, type:, role:)
       @name = name
       @type = type
+      @role = singularize(role)
       define_collection(
         collection: collection,
       )
     end
 
     private
-      attr_reader :adapter, :model_class
-      attr_reader :name, :collection, :type
+      attr_reader :model_class, :adapter, :collection
+      attr_reader :name, :type, :role
 
       def define_collection(collection:)
         pass_though_collection(
@@ -42,10 +44,6 @@ module Collections
 
       def role_query(query_value)
         Proc.new { where(role: query_value) }
-      end
-
-      def role
-        name.to_s.downcase.underscore.singularize
       end
   end
 end

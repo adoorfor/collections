@@ -6,7 +6,7 @@ module Collections
   extend ActiveSupport::Concern
   
   module ClassMethods
-    def collection(name:, as:, through: nil, proxy: false)
+    def collection(name:, as:, through: nil, proxy: false, role: nil)
       Collection.new(model: self, proxy: proxy)
         .apply(
           :name => name,

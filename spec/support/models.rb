@@ -8,6 +8,14 @@ class User < ActiveRecord::Base
     :proxy => true,
   )
 
+  collection(
+    :name => :organisation_ownerships,
+    :as => :organisation,
+    :through => :members,
+    :proxy => true,
+    :role => :owner,
+  )
+
 end
 
 

@@ -6,7 +6,7 @@ require "collections/adapters/collection_adapter"
 require "collections/adapters/has_many_adapter"
 require "collections/adapters/has_one_adapter"
 require "collections/builders/collection_builder"
-require "collections/builders/through_collection_builder"
+require "collections/builders/role_collection_builder"
 
 module Collections
   class Collection
@@ -42,6 +42,10 @@ module Collections
         through or role
       end
 
+      def collection_role
+        role ? role : singularize(name).to_sym
+      end
+
       def collection_builder
         CollectionBuilder.new(
           :model_class => model,
@@ -54,13 +58,14 @@ module Collections
       end
 
       def through_collection_builder
-        ThroughCollectionBuilder.new(
+        RoleCollectionBuilder.new(
           :model_class => model,
           :adapter => adapter,
           :collection => collection,
         ).apply(
           :name => name,
-          :type => type
+          :type => type,
+          :role => collection_role,
         )
       end
 

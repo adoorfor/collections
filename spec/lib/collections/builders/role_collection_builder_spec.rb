@@ -1,6 +1,6 @@
-require './lib/collections/builders/through_collection_builder'
+require './lib/collections/builders/role_collection_builder'
 
-RSpec.describe Collections::ThroughCollectionBuilder do
+RSpec.describe Collections::RoleCollectionBuilder do
   
   let(:model_class) {
     double(
@@ -34,7 +34,7 @@ RSpec.describe Collections::ThroughCollectionBuilder do
   describe "given the host class we add the has_many collection" do
 
     let(:builder) {
-      Collections::ThroughCollectionBuilder.new(
+      Collections::RoleCollectionBuilder.new(
         model_class: model_class,
         adapter: adapter_class,
         collection: collection,
@@ -64,6 +64,7 @@ RSpec.describe Collections::ThroughCollectionBuilder do
       builder.apply(
         :name => :admins,
         :type => :user,
+        :role => :admin,
       )
     end
   end

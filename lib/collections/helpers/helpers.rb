@@ -11,5 +11,9 @@ module Collections
     def symbolize(word)
       word.to_s.underscore.to_sym
     end
+
+    def singularize(word)
+      word.to_s.downcase.underscore.singularize
+    end
   end
 end
