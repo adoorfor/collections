@@ -2,11 +2,11 @@
 require 'active_record'
 require 'active_support/inflector'
 require 'collections/helpers/name_convention_type'
-require "collections/collection_proxy_adapter"
-require "collections/has_many_adapter"
-require "collections/has_one_adapter"
-require "collections/collection_builder"
-require "collections/through_collection_builder"
+require "collections/adapters/collection_proxy_adapter"
+require "collections/adapters/has_many_adapter"
+require "collections/adapters/has_one_adapter"
+require "collections/builders/collection_builder"
+require "collections/builders/through_collection_builder"
 
 module Collections
   class Collection

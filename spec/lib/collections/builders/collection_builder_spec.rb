@@ -1,4 +1,4 @@
-require './lib/collections/collection_builder'
+require './lib/collections/builders/collection_builder'
 
 RSpec.describe Collections::CollectionBuilder do
   
