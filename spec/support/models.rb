@@ -1,4 +1,13 @@
 class User < ActiveRecord::Base
+  include Collections
+
+  collection(
+    :name => :organisations,
+    :as => :organisation,
+    :through => :members,
+    :proxy => true,
+  )
+
 end
 
 

@@ -7,7 +7,7 @@ module Collections
   
   module ClassMethods
     def collection(name:, as:, through: nil, proxy: false)
-      Collection.new(model: self)
+      Collection.new(model: self, proxy: proxy)
         .apply(
           :name => name,
           :type => as,

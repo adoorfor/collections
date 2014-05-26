@@ -11,8 +11,9 @@ require "collections/through_collection_builder"
 module Collections
   class Collection
 
-    def initialize(model:)
+    def initialize(model:, proxy:)
       @model = model
+      @proxy = proxy
     end
 
     def apply(name:, type:, through: nil)
@@ -24,7 +25,7 @@ module Collections
     end
 
     private
-      attr_reader :model
+      attr_reader :model, :proxy
       attr_reader :name, :type, :through
 
 
@@ -58,8 +59,15 @@ module Collections
       end
 
       def collection_name
-        secondary_name = through ? through.to_s.classify : name.to_s.classify
-        model.name.to_s + secondary_name
+        primary_name + secondary_name
+      end
+
+      def primary_name
+        proxy ? type.to_s.classify : model.name.to_s
+      end
+
+      def secondary_name
+        through ? through.to_s.classify : name.to_s.classify
       end
 
       def adapter

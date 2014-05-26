@@ -14,6 +14,8 @@ module Collections
         model: model_class,
         collection: collection,
       )
+
+      p model_class.to_s + "\n"
     end
 
     private
